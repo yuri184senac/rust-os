@@ -1,20 +1,31 @@
+use std::env::args_os;
 use std::io::{self, stdout, Write};
-use std::process::Command;
-fn main() {
-    print!("> ");
-    //Faz com que o > apareca antes da linha
-    stdout().flush();
-    let mut input = String::new();
-    io::stdin().read_line(&mut input).expect("Error");
+use std::process::{Child, Command, ExitCode};
+fn main() {    
+    loop {
+       
+        print!("yuri-shell > ");
+        let _ = stdout().flush();
+        //Faz com que o > apareca antes da linha
+        
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).expect("Error"); 
 
-    
-    Command::new("cmd")
-            .args(["/C", "echo hello"])
-            .output()
-            .expect("failed to execute process")
-    
+        let output =  Command::new("cmd")
+        .arg("/C")
+        .arg(input).spawn().expect("Falha na execução do processo");
 
-   
-    
-   
+        let terminal = output.stdout;
+        
+        if !terminal.is_none() {
+            println!("{:?}", terminal); 
+           
+        } 
+        
+        
+        
+        
+        
+               
+    }    
 }
